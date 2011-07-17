@@ -179,3 +179,87 @@ assertEqual(Fractions.toString(f,false,false), "-10/4", test);
 f = new Fraction(8,4);
 test = "Fractions.toString(Fraction(8,4))";
 assertEqual(Fractions.toString(f), "2", test);
+
+//********************
+//* Fractions.add() *
+//********************
+a = new Fraction(1,2);
+b = new Fraction(1,2);
+sum = Fractions.add(a, b);
+test = "Fractions.add(new Fraction(1,2), new Fraction(1,2))";
+assertEqual(Fractions.toString(sum), "1", test);
+
+a = new Fraction(1,2);
+b = new Fraction(4,3);
+c = new Fraction(-2,9);
+sum = Fractions.add(a, b, c);
+test = "Fractions.add(new Fraction(1,2), new Fraction(4,3), new Fraction(-2,9))";
+assertEqual(Fractions.toString(sum), "1 11/18", test);
+
+a = new Fraction(1,2);
+sum = Fractions.add(a);
+test = "Fractions.add(new Fraction(1,2))";
+assertEqual(Fractions.toString(sum), "1/2", test);
+
+//*************************
+//* Fractions.subtract() *
+//*************************
+a = new Fraction(1,2);
+b = new Fraction(1,2);
+diff = Fractions.subtract(a, b);
+test = "Fractions.subtract(new Fraction(1,2), new Fraction(1,2))";
+assertEqual(Fractions.toString(diff), "0", test);
+
+a = new Fraction(1,2);
+b = new Fraction(4,3);
+c = new Fraction(-2,9);
+diff = Fractions.subtract(a, b, c);
+test = "Fractions.subtract(new Fraction(1,2), new Fraction(4,3), new Fraction(-2,9))";
+assertEqual(Fractions.toString(diff), "-11/18", test);
+
+a = new Fraction(1,2);
+diff = Fractions.subtract(a);
+test = "Fractions.subtract(new Fraction(1,2))";
+assertEqual(Fractions.toString(diff), "1/2", test);
+
+//*************************
+//* Fractions.multiply() *
+//*************************
+a = new Fraction(1,2);
+b = new Fraction(1,2);
+prod = Fractions.multiply(a, b);
+test = "Fractions.multiply(new Fraction(1,2), new Fraction(1,2))";
+assertEqual(Fractions.toString(prod), "1/4", test);
+
+a = new Fraction(1,2);
+b = new Fraction(-1,2);
+c = new Fraction(-5,3);
+prod = Fractions.multiply(a, b, c);
+test = "Fractions.multiply(new Fraction(1,2), new Fraction(-1,2), new Fraction(-5,3))";
+assertEqual(Fractions.toString(prod), "5/12", test);
+
+a = new Fraction(1,2);
+prod = Fractions.subtract(a);
+test = "Fractions.multiply(new Fraction(1,2))";
+assertEqual(Fractions.toString(prod), "1/2", test);
+
+//***********************
+//* Fractions.divide() *
+//***********************
+a = new Fraction(1,2);
+b = new Fraction(1,2);
+quo = Fractions.divide(a, b);
+test = "Fractions.divide(new Fraction(1,2), new Fraction(1,2))";
+assertEqual(Fractions.toString(quo), "1", test);
+
+a = new Fraction(1,2);
+b = new Fraction(-1,2);
+c = new Fraction(-5,3);
+quo = Fractions.divide(a, b, c);
+test = "Fractions.divide(new Fraction(1,2), new Fraction(-1,2), new Fraction(-5,3))";
+assertEqual(Fractions.toString(quo), "3/5", test);
+
+a = new Fraction(1,2);
+quo = Fractions.divide(a);
+test = "Fractions.divide(new Fraction(1,2))";
+assertEqual(Fractions.toString(quo), "1/2", test);
