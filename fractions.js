@@ -1,5 +1,5 @@
 function Fraction(numerator, denominator){
-    denominator = denominator || 1
+    denominator = denominator || 1;
     // keep negative sign on the numerator
     if(denominator < 0){
         numerator *= -1;
@@ -10,11 +10,80 @@ function Fraction(numerator, denominator){
     this.denominator = denominator;
 }
 
-Fraction.prototype.getNumerator = function(){ return this.numerator; }
-Fraction.prototype.getDenominator = function(){ return this.denominator; }
-Fraction.prototype.toString = function(){ return this.numerator + "/" + this.denominator; }
+Fraction.prototype.getNumerator = function(){ return this.numerator; };
+Fraction.prototype.getDenominator = function(){ return this.denominator; };
+Fraction.prototype.toString = function(){ return this.numerator + "/" + this.denominator; };
 
 var Fractions = {};
+Fractions.add = function(){
+    var fractions = arguments; 
+    var fractions_count = arguments.length; 
+
+    // calculate the common denominator
+    var denominator = fractions[0].getDenominator();
+    for(var i = 1; i < fractions_count; ++i){
+        denominator = this.lcm(denominator, fractions[i].getDenominator());
+    }
+
+    // add up all the adjusted numerators
+    var numerator = 0;
+    for(var i = 0; i < fractions_count; i++){
+        numerator += fractions[i].getNumerator() * (denominator / fractions[i].getDenominator());
+    }
+
+    return new Fraction(numerator, denominator);
+}   
+
+Fractions.subtract = function(){
+    var fractions = arguments;
+    var fractions_count = fractions.length;
+
+    // calculate the common denominator 
+    var denominator = fractions[0].getDenominator();
+    for(var i = 1; i < fractions_count; ++i) {
+        denominator = this.lcm(denominator, fractions[i].getDenominator());
+    }
+
+    // set the inital adjusted numerator and subtract the rest of the adjusted numerators
+    var numerator = fractions[0].getNumerator() * (denominator / fractions[0].getDenominator());
+    for(var i = 1; i < fractions_count; ++i) {
+        numerator = numerator - fractions[i].getNumerator() * (denominator / fractions[i].getDenominator());
+    }
+
+    return new Fraction(numerator, denominator);
+}
+
+Fractions.multiply = function(){
+    var fractions = arguments;
+    var fractions_count = fractions.length;
+
+    var numerator = 1;
+    var denominator = 1;
+
+    // multiply straight across
+    for(var i = 0; i < fractions_count; i++){
+        numerator *= fractions[i].getNumerator();
+        denominator *= fractions[i].getDenominator();
+    }
+
+    return new Fraction(numerator, denominator);
+}
+
+Fractions.divide = function(){
+    var fractions = arguments;
+    var fractions_count = fractions.length;
+
+    // cross multiply
+    var numerator = fractions[0].getNumerator();
+    var denominator = fractions[0].getDenominator();
+
+    for(var i = 1; i < fractions_count; i++){
+        numerator *= fractions[i].getDenominator();
+        denominator *= fractions[i].getNumerator();
+    }   
+
+    return new Fraction(numerator, denominator);      
+}
 // convert a Fraction object to a pretty string
 Fractions.toString = function(fraction, mixed, lowest_terms){
     if(typeof(mixed) == "undefined") mixed = true;
@@ -57,7 +126,7 @@ Fractions.toString = function(fraction, mixed, lowest_terms){
     // if the fraction is just zero, just show a zero
     if(whole == 0 && numerator == 0){
         return 0;
-    // need to trim off the extra space on the whole part
+        // need to trim off the extra space on the whole part
     } else if(numerator == 0 && denominator == 0) {
         return whole.slice(0,-1);
     } else {
@@ -141,6 +210,12 @@ Fractions.toMixed = function(fraction){
 Fractions.toLowestTerms = function(fraction){
     var gcf = this.gcf(fraction.getNumerator(), fraction.getDenominator());
     return new Fraction(fraction.getNumerator() / gcf, fraction.getDenominator() / gcf);
+}
+// returns the least common multiple of two integers
+Fractions.lcm = function(a, b){
+    a = Math.abs(a);
+    b = Math.abs(b);
+    return a * b / this.gcf(a, b);
 }
 
 // return the greatest common factor of a and b
