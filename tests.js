@@ -107,3 +107,40 @@ f = [1,2,3];
 test = "Fractions.fromArray([1,2,3])";
 assertEqual(Fractions.fromArray(f).toString(), "5/3", test);
 
+//************************
+//* Fractions.toMixed() *
+//************************
+f = new Fraction(5,3);
+test = "Fractions.toMixed(Fraction(5,3))";
+assertEqual(Fractions.toMixed(f), [1,2,3], test);
+
+f = new Fraction(-5,3);
+test = "Fractions.toMixed(Fraction(-5,3))";
+assertEqual(Fractions.toMixed(f), [-1,2,3], test);
+
+f = new Fraction(-10,2);
+test = "Fractions.toMixed(Fraction(-10,2))";
+assertEqual(Fractions.toMixed(f), [-5,0,2], test);
+
+f = new Fraction(10,2);
+test = "Fractions.toMixed(Fraction(10,2))";
+assertEqual(Fractions.toMixed(f), [5,0,2], test);
+
+f = new Fraction(1,3);
+test = "Fractions.toMixed(Fraction(1,3))";
+assertEqual(Fractions.toMixed(f), [0,1,3], test);
+
+//******************************
+//* Fractions.toLowestTerms() *
+//******************************
+f = new Fraction(10,2);
+test = "Fractions.toLowestTerms(Fraction(10,2))";
+assertEqual(Fractions.toLowestTerms(f).toString(), "5/1", test);
+
+f = new Fraction(-20,5);
+test = "Fractions.toLowestTerms(Fraction(-20,5))";
+assertEqual(Fractions.toLowestTerms(f).toString(), "-4/1", test);
+
+f = new Fraction(0,4);
+test = "Fractions.toLowestTerms(Fraction(0,4))";
+assertEqual(Fractions.toLowestTerms(f).toString(), "0/1", test);
