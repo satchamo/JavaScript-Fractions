@@ -44,7 +44,7 @@ Fractions.fromString = function(fraction_str){
 }
 
 // convert an array to a Fraction object
-// valid formats: array(whole), array(numerator, denominator), array(whole, numerator, denominator) 
+// valid formats: [whole], [numerator, denominator], [whole, numerator, denominator] 
 Fractions.fromArray = function(fraction_array){
     var fraction_array_count = fraction_array.length;
     // there is just a whole part
@@ -61,6 +61,46 @@ Fractions.fromArray = function(fraction_array){
     }
 
     return fraction;
+}
+
+// converts a Fraction object into an array representing the fraction as a mixed number (array[0] = whole, array[1] = numerator, array[2] = denominator)
+Fractions.toMixed = function(fraction){
+    var numerator = fraction.getNumerator();
+    var whole = 0;
+    // we only need to do something if the numerator is greater than the denominator 
+    if(Math.abs(fraction.getNumerator()) >= fraction.getDenominator()){
+        // gotta use two different functions because of the negative issue
+        if(fraction.getNumerator() > 0){
+            whole = Math.floor(fraction.getNumerator() / fraction.getDenominator());    
+        } else { 
+            whole = Math.ceil(fraction.getNumerator() / fraction.getDenominator()); 
+        }
+
+        // recalculate the numerator
+        numerator = numerator - (whole * fraction.getDenominator()); 
+        // the negative sign will be on the whole part, so get rid of it on the numerator
+        if(fraction.getNumerator() < 0){
+            numerator *= -1;
+        }
+    } 
+
+    return [whole, numerator, fraction.getDenominator()];
+}
+
+// convert a Fraction object to lowest terms
+Fractions.toLowestTerms = function(fraction){
+    var gcf = this.gcf(fraction.getNumerator(), fraction.getDenominator());
+    return new Fraction(fraction.getNumerator() / gcf, fraction.getDenominator() / gcf);
+}
+
+// return the greatest common factor of a and b
+Fractions.gcf = function(a, b){
+    while(b != 0){
+        var tmp = a;
+        a = b;
+        b = tmp % b;
+    }
+    return a;
 }
 
 // converts a 3 element array (where array[0] = whole, array[1] = numerator, and array[2] = denominator) into a Fraction object
