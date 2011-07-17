@@ -15,6 +15,7 @@ Fraction.prototype.getDenominator = function(){ return this.denominator; }
 Fraction.prototype.toString = function(){ return this.numerator + "/" + this.denominator; }
 
 var Fractions = {};
+// converts a string into a Fraction object
 Fractions.fromString = function(fraction_str){
     // if the fraction is a number, that means there is just a whole part
     if(fraction_str * 1 == fraction_str){
@@ -41,26 +42,47 @@ Fractions.fromString = function(fraction_str){
 
     return fraction;
 }
-    // converts a 3 element array (where array[0] = whole, array[1] = numerator, and array[2] = denominator) into a Fraction object
-    // or a 2 element array (where array[0] = numerator, and array[1] = denominator)
+
+// convert an array to a Fraction object
+// valid formats: array(whole), array(numerator, denominator), array(whole, numerator, denominator) 
+Fractions.fromArray = function(fraction_array){
+    var fraction_array_count = fraction_array.length;
+    // there is just a whole part
+    if(fraction_array_count == 1){
+        var fraction = new Fraction(fraction_array[0], 1);
+    // there is a numerator and denominator
+    } else if(fraction_array_count == 2){
+        var fraction = new Fraction(fraction_array[0], fraction_array[1]);
+    // fraction with whole part, numerator and denominator, just run through toImproper()
+    } else if(fraction_array_count == 3) {
+        var fraction = this.toImproper(fraction_array);
+    } else {
+        throw 'Expected an array of length 1, 2 or 3 but got one of length ' . fraction_array_count;
+    }
+
+    return fraction;
+}
+
+// converts a 3 element array (where array[0] = whole, array[1] = numerator, and array[2] = denominator) into a Fraction object
+// or a 2 element array (where array[0] = numerator, and array[1] = denominator)
 Fractions.toImproper = function(fraction_parts){
-        // if there is a whole part to the fraction, do the math
-        if(fraction_parts.length == 3){
-            var whole = fraction_parts[0];
-            var numerator = fraction_parts[1];
-            var denominator = fraction_parts[2];
-            // calculate the new numerator using the math you used in middle school
-            var new_numerator = Math.abs(denominator) * Math.abs(whole) + Math.abs(numerator);
-            // figure out the sign of the numerator (special case if whole == 0)
-            if((whole == 0 && denominator * numerator < 0) || (whole * numerator * denominator < 0)){
-                var sign = -1;
-            } else {
-                var sign = 1;
-            }
-            var fraction = new Fraction(sign * new_numerator, Math.abs(denominator));
-        } else { 
-            var fraction = new Fraction(fraction_parts[0], fraction_parts[1]);
+    // if there is a whole part to the fraction, do the math
+    if(fraction_parts.length == 3){
+        var whole = fraction_parts[0];
+        var numerator = fraction_parts[1];
+        var denominator = fraction_parts[2];
+        // calculate the new numerator using the math you used in middle school
+        var new_numerator = Math.abs(denominator) * Math.abs(whole) + Math.abs(numerator);
+        // figure out the sign of the numerator (special case if whole == 0)
+        if((whole == 0 && denominator * numerator < 0) || (whole * numerator * denominator < 0)){
+            var sign = -1;
+        } else {
+            var sign = 1;
         }
-        
-        return fraction;
-    }   
+        var fraction = new Fraction(sign * new_numerator, Math.abs(denominator));
+    } else { 
+        var fraction = new Fraction(fraction_parts[0], fraction_parts[1]);
+    }
+
+    return fraction;
+}   
