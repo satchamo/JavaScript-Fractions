@@ -92,3 +92,18 @@ f = "-1 -2/-3";
 test = "Fractions.fromString('" + f + "')";
 assertEqual(Fractions.fromString(f).toString(), "-5/3", test);
 
+//**************************
+//* Fractions.fromArray() *
+//**************************
+f = [3];
+test = "Fractions.fromArray([3])";
+assertEqual(Fractions.fromArray(f).toString(), "3/1", test);
+
+f = [1,3];
+test = "Fractions.fromArray([1,3])";
+assertEqual(Fractions.fromArray(f).toString(), "1/3", test);
+
+f = [1,2,3];
+test = "Fractions.fromArray([1,2,3])";
+assertEqual(Fractions.fromArray(f).toString(), "5/3", test);
+
