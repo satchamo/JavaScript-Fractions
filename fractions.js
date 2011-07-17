@@ -15,12 +15,62 @@ Fraction.prototype.getDenominator = function(){ return this.denominator; }
 Fraction.prototype.toString = function(){ return this.numerator + "/" + this.denominator; }
 
 var Fractions = {};
+// convert a Fraction object to a pretty string
+Fractions.toString = function(fraction, mixed, lowest_terms){
+    if(typeof(mixed) == "undefined") mixed = true;
+    if(typeof(lowest_terms) == "undefined") lowest_terms = true;
+    var whole = 0;
+    var numerator = fraction.getNumerator();
+    var denominator = fraction.getDenominator();
+
+    if(mixed){
+        var fraction_array = this.toMixed(fraction);
+        whole = fraction_array[0];
+        numerator = fraction_array[1];
+        denominator = fraction_array[2];
+        var fraction = new Fraction(numerator, denominator);
+    }
+
+    if(lowest_terms){
+        var fraction = this.toLowestTerms(fraction);
+        numerator = fraction.getNumerator();
+        denominator = fraction.getDenominator();
+    }
+
+    // don't need to show leading zero
+    if(whole == 0){
+        whole = '';
+        // append space after the whole number since we don't want the whole and numerator touching
+    } else {
+        whole += " ";
+    }
+
+    // don't show the numerator or denominator
+    if(numerator == 0){
+        numerator = '';
+        denominator = '';
+        // append a slash after the numerator
+    } else {
+        numerator += "/";
+    }
+
+    // if the fraction is just zero, just show a zero
+    if(whole == 0 && numerator == 0){
+        return 0;
+    // need to trim off the extra space on the whole part
+    } else if(numerator == 0 && denominator == 0) {
+        return whole.slice(0,-1);
+    } else {
+        return whole + numerator + denominator;
+    }
+}
+
 // converts a string into a Fraction object
 Fractions.fromString = function(fraction_str){
     // if the fraction is a number, that means there is just a whole part
     if(fraction_str * 1 == fraction_str){
         var fraction = new Fraction(fraction_str, 1);
-    // split fraction on slash
+        // split fraction on slash
     } else {
         var part1 = fraction_str.split(/\//);
         if(part1.length == 1){
@@ -50,10 +100,10 @@ Fractions.fromArray = function(fraction_array){
     // there is just a whole part
     if(fraction_array_count == 1){
         var fraction = new Fraction(fraction_array[0], 1);
-    // there is a numerator and denominator
+        // there is a numerator and denominator
     } else if(fraction_array_count == 2){
         var fraction = new Fraction(fraction_array[0], fraction_array[1]);
-    // fraction with whole part, numerator and denominator, just run through toImproper()
+        // fraction with whole part, numerator and denominator, just run through toImproper()
     } else if(fraction_array_count == 3) {
         var fraction = this.toImproper(fraction_array);
     } else {
