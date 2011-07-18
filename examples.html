@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Examples</title>
+<script type="text/javascript" src="fractions.js"></script>
+<script type="text/javascript">
+// Create a basic fraction
+var a = new Fraction(1,2);
+// Because the Fraction constructor only accepts a numerator, and denominator, you can use this method to convert a mixed number to a Fraction object 
+var b = Fractions.fromArray([1,1,2]); 
+// The denominator is assumed to be 1 if none is given
+var c = new Fraction(5);
+// Convert a well formed string to a fraction
+var d = Fractions.fromString("-1 2/3");
+var e = Fractions.fromString("8/10");
+
+var sum = Fractions.add(a, b); 
+// Fraction.toString() is dumb, and just prints the numerator/denominator
+document.write(sum.toString() +  "<br />"); // 4/2
+// Fractions.toString() prints in lowest terms, and mixed numbers
+document.write(Fractions.toString(sum) + "<br />"); // 2
+
+var diff = Fractions.subtract(c, b, e);
+document.write(Fractions.toString(diff) + "<br />"); // 2 7/10
+
+var prod = Fractions.multiply(c, b, e);
+document.write(Fractions.toString(prod) + "<br />"); // 6
+
+var quo = Fractions.divide(c, b, e);
+// Don't convert to a mixed number with the Fractions.toString method
+document.write(Fractions.toString(quo, false) + "<br />"); // 25/6
+// Don't convert to a mixed number, or convert to lowest terms
+document.write(Fractions.toString(quo, false, false) + "<br />"); // 100/24
+</script>
+</head>
+<body>
+</body>
+</html>
